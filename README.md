@@ -5,6 +5,18 @@ A simple script that preps a synonyms list for Solr (and other matchers)
 
 This repo includes an Anaconda environment file, along with a requirements.py. I'd suggest the former, but if you want to just go for the latter that's on you.
 
+### File Format
+
+This expects a Google Doc with the following format (just copy and paste this in as the header of a new document)
+
+```
+This document is to allow a collaborative curation of synonyms used in our search algorithms. Nicknames, deferential titles, etc. should be added to this as they emerge or we think of them.
+
+Please label the headword in “Heading 2”, followed by a newline (do not put a blank line after the headword), followed by the synonyms separated by commas, followed by a newline (again, do not put a blank line yourself afterwards). Please keep everything in lower case with no punctuation.
+
+-----
+```
+
 ### Anaconda
 
 1. Clone this repo ```$ https://github.com/TechAndCheck/prepcook.git```
@@ -31,5 +43,29 @@ This repo includes an Anaconda environment file, along with a requirements.py. I
 ### Running
 
 1. Get the document ID from [Chris](@cguess)
-1. Run the command `python prepcook.py -f <DOCUMENT_ID>`
+1. Run the command `python prepcook.py --id <DOCUMENT_ID>`
 
+### Requirements
+
+- Python 3
+- Pip
+
+This has been tested on MacOS, and should work just fine on Linux. Windows is up in the air.
+
+## Contributing
+
+The main thing is that this uses Pylint and has a .pylintrc configuration file in the repository
+
+It also contains an Anaconda setup, so if you use that you can do `conda install --file environment.yml` and it'll all be setup.
+
+If you use just normal Pip then `pip install -r requirements.txt` will do the trick
+
+## Author
+
+**Christopher Guess**
+_[@cguess](https://www.twitter.com/cguess)_
+
+Lead Technologist
+Duke Reporters' Lab
+Duke University
+[christopher.guess@duke.edu](mailto:christopher.guess@duke.edu)
