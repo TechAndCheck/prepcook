@@ -56,16 +56,18 @@ This has been tested on MacOS, and should work just fine on Linux. Windows is up
 
 The main thing is that this uses Pylint and has a .pylintrc configuration file in the repository
 
-It also contains an Anaconda setup, so if you use that you can do `conda install --file environment.yml` and it'll all be setup.
+It also contains an Anaconda setup, so if you use that you can do  
+```conda install --file environment.yml```  
+and it'll all be setup.
 
 If you use just normal Pip then `pip install -r requirements.txt` will do the trick
 
 ## Author
 
-**Christopher Guess**
+**Christopher Guess**  
 _[@cguess](https://www.twitter.com/cguess)_
 
-Lead Technologist
-Duke Reporters' Lab
-Duke University
+Lead Technologist  
+Duke Reporters' Lab  
+Duke University  
 [christopher.guess@duke.edu](mailto:christopher.guess@duke.edu)
