@@ -1,0 +1,12 @@
+name: prepcook
+dependencies:
+- python>=3.7
+- anaconda
+- pip
+- pip:
+  - click
+  - google-api-python-client
+  - google-auth-httplib2
+  - google-auth-oauthlib
+  - httplib2
+  - oauth2client
