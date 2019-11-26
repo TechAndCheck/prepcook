@@ -1,5 +1,5 @@
 # Prepcook
-A simple script that preps a synonyms list for Solr (and other matchers)
+A simple script that preps a synonyms list for Solr and the [Chewy](https://rubygems.org/gems/chewy) gem. Others are pretty easy to add if necessary.
 
 ## Setup
 
