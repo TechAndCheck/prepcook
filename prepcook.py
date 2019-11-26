@@ -76,7 +76,8 @@ def parse_document(elements):
             for elem in value.get('paragraph').get('elements'):
                 # Read the current paragraph element
                 text_line = read_paragraph_element(elem)
-                # Our header is finished with a ----- line, so we just keep reading until we find that.
+                # Our header is finished with a ----- line,
+                # so we just keep reading until we find that.
                 if passed_header is False:
                     if text_line == '-----':
                         passed_header = True
@@ -109,7 +110,7 @@ def format_for_solr(results, file_name="solr_output.txt"):
             file_name: The name of the file to save.
     """
 
-    file_handler = open("solr_output.txt", "w")
+    file_handler = open(file_name, "w")
     for key in results:
         flattend_values = ",".join(results[key])
         file_handler.write(f"{key},{flattend_values}\n")
@@ -118,11 +119,36 @@ def format_for_solr(results, file_name="solr_output.txt"):
     click.echo(f"☀️   Solr synonyms saved in {file_name}")
 
 
+
+def format_for_chewy(results, file_name="chewy_output.txt"):
+    """Formats results for the Chewy Ruby gem synonyms and saves it to the
+    indicated filename.
+
+        Args:
+            results: A dictionary of elements parsed from the Google Doc.
+            file_name: The name of the file to save.
+    """
+    flattend_values = []
+    for key in results:
+        merged_synonyms = ",".join(results[key])
+        flattend_values.append(f"\"{key},{merged_synonyms}\"")
+
+    final_values = ",\n".join(flattend_values)
+
+    file_handler = open(file_name, "w")
+    file_handler.write(f"[\n{final_values}\n]")
+    file_handler.close()
+
+    click.echo(f"🐻    Chewy synonyms saved in {file_name}")
+
+
+
 @click.command()
-@click.option('--id', prompt='Document ID',
+@click.option('--docid', prompt='Document ID',
               help='Get this from the URL of the document.')
 @click.option('--solr', default='solr_output.txt', help='The name of the Solr output file')
-def main(id, solr):
+@click.option('--chewy', default='chewy_output.txt', help='The name of the Chewy output file')
+def main(docid=None, solr=None, chewy=None):
     """Uses the Docs API to print out the text of a document."""
     credentials = get_credentials()
     http = credentials.authorize(Http())
@@ -130,7 +156,7 @@ def main(id, solr):
         'docs', 'v1', http=http, discoveryServiceUrl=DISCOVERY_DOC)
 
     try:
-        doc = docs_service.documents().get(documentId=id).execute()
+        doc = docs_service.documents().get(documentId=docid).execute()
     except googleapiclient.errors.HttpError as error:
         click.echo("Error fetching document. You probably have the wrong document ID or you don't have access it.")
         click.echo(error)
@@ -139,6 +165,7 @@ def main(id, solr):
     doc_content = doc.get('body').get('content')
     results = parse_document(doc_content)
     format_for_solr(results, solr)
+    format_for_chewy(results, chewy)
 
 if __name__ == '__main__':
     main()

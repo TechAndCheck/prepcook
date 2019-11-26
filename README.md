@@ -43,7 +43,7 @@ Please label the headword in “Heading 2”, followed by a newline (do not put 
 ### Running
 
 1. Get the document ID from [Chris](@cguess)
-1. Run the command `python prepcook.py --id <DOCUMENT_ID>`
+1. Run the command `python prepcook.py --docid <DOCUMENT_ID>`
 
 ### Requirements
 
