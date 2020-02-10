@@ -11,18 +11,16 @@ Recursively extracts the text from a Google Doc.
 from __future__ import print_function
 
 import pdb
-
-from apiclient import discovery
-from httplib2 import Http
-from oauth2client import client
-from oauth2client import file
-from oauth2client import tools
-
+import pickle
+import os.path
+import googleapiclient
 import click
 
-import googleapiclient
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
 
-SCOPES = 'https://www.googleapis.com/auth/documents.readonly'
+SCOPES = ['https://www.googleapis.com/auth/documents.readonly']
 DISCOVERY_DOC = 'https://docs.googleapis.com/$discovery/rest?version=v1'
 
 def get_credentials():
@@ -34,13 +32,27 @@ def get_credentials():
     Returns:
         Credentials, the obtained credential.
     """
-    store = file.Storage('token.json')
-    credentials = store.get()
+    creds = None
+    # The file token.pickle stores the user's access and refresh tokens, and is
+    # created automatically when the authorization flow completes for the first
+    # time.
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token:
+            creds = pickle.load(token)
+    # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+        # Save the credentials for the next run
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
 
-    if not credentials or credentials.invalid:
-        flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
-        credentials = tools.run_flow(flow, store)
-    return credentials
+    return creds
+
 
 def read_paragraph_element(element):
     """Returns the text in the given ParagraphElement.
@@ -53,6 +65,7 @@ def read_paragraph_element(element):
     if not text_run:
         return None
     return text_run.get('content').rstrip()
+
 
 
 def parse_document(elements):
@@ -151,9 +164,8 @@ def format_for_chewy(results, file_name="chewy_output.txt"):
 def main(docid=None, solr=None, chewy=None):
     """Uses the Docs API to print out the text of a document."""
     credentials = get_credentials()
-    http = credentials.authorize(Http())
-    docs_service = discovery.build(
-        'docs', 'v1', http=http, discoveryServiceUrl=DISCOVERY_DOC)
+
+    docs_service = build('docs', 'v1', credentials=credentials)
 
     try:
         doc = docs_service.documents().get(documentId=docid).execute()

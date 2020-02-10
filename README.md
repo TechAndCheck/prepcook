@@ -23,6 +23,8 @@ Please label the headword in “Heading 2”, followed by a newline (do not put 
 1. Install [Anaconda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) (I prefer [Miniconda](https://docs.conda.io/en/latest/miniconda.html) since it has less packages)
 1. Create the Anaconda environment by running the following in a terminal in your repo folder (this takes awhile sometimes) ```$ conda env create --file environment.yml```
 
+**Note:** If you get an error such as `PackagesNotFoundError: The following packages are not available from current channels` run `conda config --append channels conda-forge` to add `conda-forge` to your repositories.
+
 ### Google Docs
 
 1. Go to the [Google Developer Console](https://console.developers.google.com/) and create a new project.
@@ -44,6 +46,8 @@ Please label the headword in “Heading 2”, followed by a newline (do not put 
 
 1. Get the document ID from [Chris](@cguess)
 1. Run the command `python prepcook.py --docid <DOCUMENT_ID>`
+1. If it's your first time, the script should automatically open a website to get the OAuth credentials
+1. Go through, and yes, you want to trust PrepCook, even though Google hasn't verified it
 
 ### Requirements
 
@@ -56,18 +60,18 @@ This has been tested on MacOS, and should work just fine on Linux. Windows is up
 
 The main thing is that this uses Pylint and has a .pylintrc configuration file in the repository
 
-It also contains an Anaconda setup, so if you use that you can do  
-```conda install --file environment.yml```  
+It also contains an Anaconda setup, so if you use that you can do
+```conda install --file environment.yml```
 and it'll all be setup.
 
 If you use just normal Pip then `pip install -r requirements.txt` will do the trick
 
 ## Author
 
-**Christopher Guess**  
+**Christopher Guess**
 _[@cguess](https://www.twitter.com/cguess)_
 
-Lead Technologist  
-Duke Reporters' Lab  
-Duke University  
+Lead Technologist
+Duke Reporters' Lab
+Duke University
 [christopher.guess@duke.edu](mailto:christopher.guess@duke.edu)
